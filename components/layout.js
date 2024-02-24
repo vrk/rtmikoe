@@ -132,9 +132,9 @@ export default function Home({ langCode }) {
     return <PlayableSentence index={index} key={index} textspan={sentence} isPaused={!isSpeaking} setIndexPlaying={setIndexPlaying} indexPlaying={indexPlaying}/>;
   });
 
-  const kTitle = <>Speak To Me In Korean (or <Link href="/eng">English</Link> or <Link href="/beng">British English</Link>)</>;
-  const eTitle = <>Speak To Me In English (or <Link href="/">Korean</Link> or <Link href="/beng">British English</Link>)</>;
-  const bTitle = <>Speak To Me In British English (or <Link href="/">Korean</Link> or <Link href="/eng">American English</Link>)</>;
+  const kTitle = <>Read To Me In Korean (or <Link href="/eng">English</Link> or <Link href="/beng">British English</Link>)</>;
+  const eTitle = <>Read To Me In English (or <Link href="/">Korean</Link> or <Link href="/beng">British English</Link>)</>;
+  const bTitle = <>Read To Me In British English (or <Link href="/">Korean</Link> or <Link href="/eng">American English</Link>)</>;
   const language = lang === 'ko-KR' ? "Korean 🇰🇷" : (lang === 'en-US' ? "English 🇺🇸" : "English 🇬🇧"); 
 
   const title = lang === 'ko-KR' ? kTitle : (lang === 'en-US' ? eTitle : bTitle); 
