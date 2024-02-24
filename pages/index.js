@@ -8,7 +8,6 @@ import styles from './index.module.css';
 
 const MAX_UTTERANCE_LENGTH = 32767;
 
-
 export default function Home() {
   const [whatToSay, setWhatToSaySrc] = useState(`시간 걸리고 노력해야 돼서 정말 쉽지 않은 일이에요.
   언젠가 못하는 날이 와요.
@@ -59,6 +58,7 @@ export default function Home() {
     // split on sentences
     const result = text.match( /[^\.!\?]+[\.!\?]+/g );
     // clean up each sentence
+    if (!result) { return; }
     const cleaned = result.map(el => el.trim());
     console.log(cleaned);
     setParsedSentences(cleaned);
