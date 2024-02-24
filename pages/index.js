@@ -2,6 +2,7 @@ import Head from 'next/head';
 import Layout, { siteTitle } from '../components/layout';
 import VoiceSelector from '../components/voice-selector';
 import { useState, useEffect, useCallback} from 'react';
+import PlayableSentence from '../components/playable-sentence';
 
 
 const MAX_UTTERANCE_LENGTH = 32767;
@@ -41,7 +42,10 @@ export default function Home() {
   const [gbVoice, setGbVoice] = useState(undefined);
   const [krVoice, setKrVoice] = useState(undefined);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [indexPlaying, setIndexPlaying] = useState(0);
   const [selectedVoice, setSelectedVoice] = useState(undefined);
+
+  const [parsedSentences, setParsedSentences] = useState([]);
 
   const populateVoiceList = useCallback(() => {
     const newVoices = speechSynthesis.getVoices();
@@ -68,16 +72,27 @@ export default function Home() {
   }, [populateVoiceList]);
 
   const saySomething = () => {
+
     const utterance = new SpeechSynthesisUtterance(whatToSay);
     utterance.voice = lang === 'ko-KR' ? krVoice : (lang === 'en-US' ? usVoice : gbVoice); 
     utterance.lang = lang;
     speechSynthesis.speak(utterance);
+      speechSynthesis.resume();
     setIsSpeaking(true);
   };
+
   const onTextAreaChanged = (e) => {
     console.log(e.target.value)
-    setWhatToSaySrc((e.target.value));
+    const text = e.target.value;
+    setWhatToSaySrc((text));
+    // split on sentences
+    const result = text.match( /[^\.!\?]+[\.!\?]+/g );
+    // clean up each sentence
+    const cleaned = result.map(el => el.trim());
+    console.log(cleaned);
+    setParsedSentences(cleaned);
   };
+
 
   const togglePlayPause = (e) => {
     if (isSpeaking && speechSynthesis.speaking) {
@@ -89,6 +104,11 @@ export default function Home() {
     }
   };
 
+  const displaySentences = parsedSentences.map((sentence, index) => {
+      return <PlayableSentence index={index} textspan={sentence} indexPlaying={indexPlaying}/>;
+
+  });
+
   return (
     <Layout home>
       <Head>
@@ -97,9 +117,14 @@ export default function Home() {
       <button onClick={saySomething}>say something</button>
       {/* <button onClick={ () => setLang("ko-KR") }>speak korean</button>
       <button onClick={ () => setLang("en-US") }>speak english</button> */}
-      <textarea onChange={onTextAreaChanged}>{whatToSay}</textarea>
+      <textarea onChange={onTextAreaChanged} value={whatToSay}></textarea>
       <br></br>
       <button onClick={togglePlayPause}>{isSpeaking ? "pause" : "play"}</button>
+
+      <div>
+        {displaySentences}
+      </div>
+
 
     </Layout>
   );
