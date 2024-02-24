@@ -92,6 +92,9 @@ export default function Home() {
   }, [whatToSay]);
 
   useEffect(() => {
+    if (indexPlaying === -1) {
+      return;
+    }
     const sentence = parsedSentences[indexPlaying];
     const utterance = new SpeechSynthesisUtterance(sentence);
     utterance.voice = lang === 'ko-KR' ? krVoice : (lang === 'en-US' ? usVoice : gbVoice); 
