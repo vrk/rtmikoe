@@ -141,7 +141,7 @@ export default function Home({ langCode }) {
   return (
     <main>
       <Head>
-        <title>{lang === 'ko-KR' ? "Speak To Me In Korean" : "Speak To Me In English"}</title>
+        <title>{lang === 'ko-KR' ? "Read To Me In Korean" : "Read To Me In English"}</title>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Gothic+A1&display=swap" rel="stylesheet"/>
