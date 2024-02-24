@@ -3,6 +3,7 @@ import Layout, { siteTitle } from '../components/layout';
 import VoiceSelector from '../components/voice-selector';
 import { useState, useEffect, useCallback} from 'react';
 import PlayableSentence from '../components/playable-sentence';
+import styles from './index.module.css';
 
 
 const MAX_UTTERANCE_LENGTH = 32767;
@@ -103,6 +104,7 @@ export default function Home() {
     utterance.voice = lang === 'ko-KR' ? krVoice : (lang === 'en-US' ? usVoice : gbVoice); 
     utterance.lang = lang;
     utterance.addEventListener('end', () => {
+      setIsSpeaking(false);
       if (autoAdvance && indexPlaying !== parsedSentences.length - 1) {
         setIndexPlaying(indexPlaying + 1)
       } else {
@@ -124,7 +126,10 @@ export default function Home() {
 
 
   const togglePlayPause = (e) => {
-    if (isSpeaking && speechSynthesis.speaking) {
+    if (!speechSynthesis.speaking) {
+      setIndexPlaying(0);
+      setIsSpeaking(true);
+    } else if (isSpeaking) {
       speechSynthesis.pause();
       setIsSpeaking(false);
     } else {
@@ -134,27 +139,32 @@ export default function Home() {
   };
 
   const displaySentences = parsedSentences.map((sentence, index) => {
-      return <PlayableSentence index={index} key={index} setAutoAdvance={setAutoAdvance} textspan={sentence} setIndexPlaying={setIndexPlaying} indexPlaying={indexPlaying}/>;
+      return <PlayableSentence index={index} key={index} textspan={sentence} setIndexPlaying={setIndexPlaying} indexPlaying={indexPlaying}/>;
 
   });
 
   return (
-    <Layout home>
+    <main>
       <Head>
         <title>{siteTitle}</title>
       </Head>
-      <button onClick={saySomething}>say something</button>
-      {/* <button onClick={ () => setLang("ko-KR") }>speak korean</button>
-      <button onClick={ () => setLang("en-US") }>speak english</button> */}
-      <textarea onChange={onTextAreaChanged} value={whatToSay}></textarea>
-      <br></br>
-      <button onClick={togglePlayPause}>{isSpeaking ? "pause" : "play"}</button>
-
-      <div>
-        {displaySentences}
+      <div className={styles.container}>
+        <h1>Speak To Me In Korean (or english)</h1>
+        <div className={styles.row}>
+          <div className={styles.textToRead}>
+            Paste the text to read here:
+            <textarea className={styles.rawText} onChange={onTextAreaChanged} value={whatToSay}></textarea>
+          </div>
+          <div className={styles.playback}>
+            <button onClick={togglePlayPause}>{isSpeaking ? "pause" : "play"}</button>
+            <label>
+              <input type="checkbox" defaultChecked={autoAdvance} onChange={(e) => { setAutoAdvance(e.currentTarget.checked) }}></input>
+              Auto-play next sentence
+            </label>
+            {displaySentences}
+          </div>
+        </div>
       </div>
-
-
-    </Layout>
+    </main>
   );
 }
