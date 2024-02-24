@@ -41,9 +41,9 @@ export default function Home() {
 
   }, [populateVoiceList]);
   const saySomething = () => {
-    const utterance = new SpeechSynthesisUtterance("안녕");
+    const utterance = new SpeechSynthesisUtterance(whatToSay);
     utterance.voice = lang === 'ko-KR' ? krVoice : (lang === 'en-US' ? usVoice : gbVoice); 
-    // utterance.lang = 'ko-KR';
+    utterance.lang = lang;
     speechSynthesis.speak(utterance);
   };
   const onTextAreaChanged = (e) => {
