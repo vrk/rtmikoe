@@ -129,10 +129,10 @@ export default function Home({ langCode }) {
   };
 
   const displaySentences = parsedSentences.map((sentence, index) => {
-    return <PlayableSentence index={index} key={index} textspan={sentence} setIndexPlaying={setIndexPlaying} indexPlaying={indexPlaying}/>;
+    return <PlayableSentence index={index} key={index} textspan={sentence} isPaused={!isSpeaking} setIndexPlaying={setIndexPlaying} indexPlaying={indexPlaying}/>;
   });
 
-  const kTitle = <>Speak To Me In Korean (or <Link href="/eng">English</Link>)</>;
+  const kTitle = <>Speak To Me In Korean (or <Link href="/eng">English</Link> or <Link href="/beng">British English</Link>)</>;
   const eTitle = <>Speak To Me In English (or <Link href="/">Korean</Link> or <Link href="/beng">British English</Link>)</>;
   const bTitle = <>Speak To Me In British English (or <Link href="/">Korean</Link> or <Link href="/eng">American English</Link>)</>;
   const language = lang === 'ko-KR' ? "Korean 🇰🇷" : (lang === 'en-US' ? "English 🇺🇸" : "English 🇬🇧"); 
@@ -178,7 +178,7 @@ export default function Home({ langCode }) {
               </label>
               <label>
                 <input type="checkbox" defaultChecked={autoAdvance} onChange={(e) => { setAutoAdvance(e.currentTarget.checked); }}></input>
-                Auto-play next sentence
+                Autoplay
               </label>
             </div>
           </div>
