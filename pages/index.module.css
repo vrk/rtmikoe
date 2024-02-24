@@ -21,7 +21,8 @@
   align-items: stretch;
 }
 
-.textToRead {
+.textToRead textarea {
+  font-size: 18px;;
   /* position: absolute;
   top:0;
   bottom: 0; */
