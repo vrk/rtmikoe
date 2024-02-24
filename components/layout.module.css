@@ -5,6 +5,7 @@
 
 .container h1 {
   margin: 0;
+  padding: 10px;
 }
 
 .gridHome {
@@ -15,17 +16,19 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: auto;
-  padding: 0.5em;
+  align-items:  center;
 }
 
 .griddy, .griddy2 {
   gap: 2em;
+  padding: 0.5em;
 }
 
 .griddy > div {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
 }
 
 .griddy2 {

@@ -16,7 +16,7 @@ export default function Home({ langCode }) {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [indexPlaying, setIndexPlaying] = useState(-1);
   const [autoAdvance, setAutoAdvance] = useState(true);
-  const [splitStyle, setSplitStyle] = useState("newlines");
+  const [splitStyle, setSplitStyle] = useState("sentences");
 
   const [parsedSentences, setParsedSentences] = useState([]);
 
@@ -41,7 +41,7 @@ export default function Home({ langCode }) {
       }
       return;
     }
-    const cleaned = result.map(el => el.trim());
+    const cleaned = result.map(el => el.trim()).filter(el => el.length !== 0);
     console.log(cleaned);
     setParsedSentences(cleaned);
   }
@@ -139,6 +139,9 @@ export default function Home({ langCode }) {
     <main>
       <Head>
         <title>{lang === 'ko-KR' ? "Speak To Me In Korean" : "Speak To Me In English"}</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Gothic+A1&display=swap" rel="stylesheet"/>
       </Head>
       <div className={styles.container}>
         <h1>{title}</h1>
@@ -158,7 +161,7 @@ export default function Home({ langCode }) {
             <div>
               <button onClick={togglePlayPause} disabled={parsedSentences.length === 0}>{isSpeaking ? "pause" : "play"}</button>
               <label>
-                <input type="checkbox" defaultChecked={autoAdvance} onChange={(e) => { setAutoAdvance(e.currentTarget.checked); debugger; }}></input>
+                <input type="checkbox" defaultChecked={autoAdvance} onChange={(e) => { setAutoAdvance(e.currentTarget.checked); }}></input>
                 Auto-play next sentence
               </label>
             </div>

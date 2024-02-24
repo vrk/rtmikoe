@@ -1,13 +1,15 @@
 
 
 .playing {
-  background-color: red;;
+  background-color: rgb(255, 231, 251);
 }
 
 .playable {
   cursor: pointer;
+  padding: 10px;
+  border-radius: 5px;
 }
 
 .playable:hover {
-  background-color: yellow;
+  background-color: rgb(255, 255, 221);
 }
