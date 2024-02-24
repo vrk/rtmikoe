@@ -73,7 +73,7 @@ export default function Home({ langCode }) {
 
   useEffect(() => {
     splitSentences(whatToSay);
-  }, [whatToSay]);
+  }, [whatToSay, splitStyle]);
 
   useEffect(() => {
     speechSynthesis.cancel();
@@ -142,22 +142,32 @@ export default function Home({ langCode }) {
       </Head>
       <div className={styles.container}>
         <h1>{title}</h1>
-        <div className={styles.row}>
-          <div className={styles.textToRead}>
-            Paste the {language} text here. <br></br>
-            Split lines by <select value={splitStyle} onChange={onSplitStyleChanged}>
-              <option value="sentences">sentences (.!?)</option>
-              <option value="newlines">newlines</option>
-            </select>
-            <textarea className={styles.rawText} onChange={onTextAreaChanged} value={whatToSay}></textarea>
+        <div className={styles.gridHome}>
+          <div className={styles.griddy}>
+            <div>
+              <div>
+                Paste the {language} text here. 
+              </div>
+              <div>
+              Split lines by <select value={splitStyle} onChange={onSplitStyleChanged}>
+                <option value="sentences">sentences (.!?)</option>
+                <option value="newlines">newlines</option>
+              </select>
+              </div>
+            </div>
+            <div>
+              <button onClick={togglePlayPause} disabled={parsedSentences.length === 0}>{isSpeaking ? "pause" : "play"}</button>
+              <label>
+                <input type="checkbox" defaultChecked={autoAdvance} onChange={(e) => { setAutoAdvance(e.currentTarget.checked); debugger; }}></input>
+                Auto-play next sentence
+              </label>
+            </div>
           </div>
-          <div className={styles.playback}>
-            <button onClick={togglePlayPause} disabled={parsedSentences.length === 0}>{isSpeaking ? "pause" : "play"}</button>
-            <label>
-              <input type="checkbox" defaultChecked={autoAdvance} onChange={(e) => { setAutoAdvance(e.currentTarget.checked); debugger; }}></input>
-              Auto-play next sentence
-            </label>
-            {displaySentences}
+          <div className={styles.griddy2}>
+              <textarea className={styles.rawText} onChange={onTextAreaChanged} value={whatToSay}></textarea>
+              <div className={styles.playback}>
+                {displaySentences}
+              </div>
           </div>
         </div>
       </div>
