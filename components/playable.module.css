@@ -1,0 +1,13 @@
+
+
+.playing {
+  background-color: red;;
+}
+
+.playable {
+  cursor: pointer;
+}
+
+.playable:hover {
+  background-color: yellow;
+}
