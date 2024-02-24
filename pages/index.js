@@ -87,6 +87,7 @@ export default function Home() {
     }
 
   }, [populateVoiceList]);
+
   useEffect(() => {
     splitSentences(whatToSay);
   }, [whatToSay]);
@@ -95,8 +96,10 @@ export default function Home() {
     if (indexPlaying === -1) {
       return;
     }
+    speechSynthesis.cancel();
     const sentence = parsedSentences[indexPlaying];
     const utterance = new SpeechSynthesisUtterance(sentence);
+    console.log(utterance);
     utterance.voice = lang === 'ko-KR' ? krVoice : (lang === 'en-US' ? usVoice : gbVoice); 
     utterance.lang = lang;
     utterance.addEventListener('end', () => {
@@ -107,6 +110,7 @@ export default function Home() {
       }
     })
     speechSynthesis.speak(utterance);
+    speechSynthesis.pause();
     speechSynthesis.resume();
 
     setIsSpeaking(true);
@@ -130,7 +134,7 @@ export default function Home() {
   };
 
   const displaySentences = parsedSentences.map((sentence, index) => {
-      return <PlayableSentence index={index} key={index} textspan={sentence} indexPlaying={indexPlaying}/>;
+      return <PlayableSentence index={index} key={index} setAutoAdvance={setAutoAdvance} textspan={sentence} setIndexPlaying={setIndexPlaying} indexPlaying={indexPlaying}/>;
 
   });
 
