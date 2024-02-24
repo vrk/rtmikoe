@@ -17,6 +17,8 @@ export default function Home({ langCode }) {
   const [indexPlaying, setIndexPlaying] = useState(-1);
   const [autoAdvance, setAutoAdvance] = useState(true);
   const [splitStyle, setSplitStyle] = useState("sentences");
+  const [playbackSpeed, setPlaybackSpeed] = useState(1);
+  const [currentUtter, setCurrentUtter] = useState(undefined);
 
   const [parsedSentences, setParsedSentences] = useState([]);
 
@@ -90,6 +92,7 @@ export default function Home({ langCode }) {
     console.log(utterance);
     utterance.voice = lang === 'ko-KR' ? krVoice : (lang === 'en-US' ? usVoice : gbVoice); 
     utterance.lang = lang;
+    utterance.rate = playbackSpeed;
     utterance.addEventListener('end', () => {
       setIsSpeaking(false);
       if (autoAdvance && indexPlaying !== parsedSentences.length - 1) {
@@ -98,13 +101,13 @@ export default function Home({ langCode }) {
         setIndexPlaying(-1);
       }
     })
+    setCurrentUtter(utterance);
     speechSynthesis.speak(utterance);
     speechSynthesis.pause();
     speechSynthesis.resume();
 
     setIsSpeaking(true);
-  }, [indexPlaying, autoAdvance]);
-  
+  }, [indexPlaying, autoAdvance, playbackSpeed]);
   
 
   const saySomething = () => {
@@ -160,6 +163,19 @@ export default function Home({ langCode }) {
             </div>
             <div>
               <button onClick={togglePlayPause} disabled={parsedSentences.length === 0}>{isSpeaking ? "pause" : "play"}</button>
+              <label>
+                Playback Rate:
+                <input type="range" min="0.1" max="2" step="0.1" name="rate" id="rate" defaultValue={playbackSpeed} onChange={(e) => {
+                  setPlaybackSpeed(e.currentTarget.value);
+                  // if (currentUtter) {
+                  //   speechSynthesis.pause();
+                  //   currentUtter.playback = playbackSpeed;
+                  //   speechSynthesis.resume();
+                  // }
+                }
+                }/>
+                {playbackSpeed}
+              </label>
               <label>
                 <input type="checkbox" defaultChecked={autoAdvance} onChange={(e) => { setAutoAdvance(e.currentTarget.checked); }}></input>
                 Auto-play next sentence
